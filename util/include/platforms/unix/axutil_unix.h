@@ -121,7 +121,7 @@ extern "C"
 #include "axutil_date_time_util_unix.h"
 
     /* for file access handling */
-#ifdef HAVE_UNISTD_H && !defined __APPLE__
+#if defined HAVE_UNISTD_H && !defined __APPLE__
 #include <unistd.h>
 #endif /*HAVE_UNISTD_H && !defined __APPLE__*/
 
