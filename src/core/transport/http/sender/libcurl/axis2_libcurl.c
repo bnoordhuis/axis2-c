@@ -882,19 +882,19 @@ axis2_libcurl_set_auth_options(
     if (property)
     {
         uname = (axis2_char_t *) axutil_property_get_value(property, env);
+        if (uname)
+        {
+            curl_easy_setopt(handler, CURLOPT_USERNAME, uname);
+        }
     }
     property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_AUTH_PASSWD);
     if (property)
     {
         passwd = (axis2_char_t *) axutil_property_get_value(property, env);
-    }
-    if (uname && passwd)
-    {
-        axis2_char_t buffer[256];
-        strncpy(buffer, uname, 256);
-        strncat(buffer, ":", 256);
-        strncat(buffer, passwd, 256);
-        curl_easy_setopt(handler, CURLOPT_USERPWD, buffer);
+        if (passwd)
+        {
+            curl_easy_setopt(handler, CURLOPT_PASSWORD, passwd);
+        }
     }
 
     property = (axutil_property_t *)axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_HTTP_AUTH_TYPE);
