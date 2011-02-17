@@ -140,14 +140,23 @@ axis2_http_sender_configure_proxy_digest_auth(
     axis2_http_simple_request_t * request,
     axis2_char_t * header_data);
 
-
-
-#endif
-
 static axutil_hash_t *
 axis2_http_sender_connection_map_create(
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
+
+static axis2_http_client_t *
+axis2_http_sender_connection_map_get(
+        axutil_hash_t *connection_map,
+        const axutil_env_t *env,
+        axis2_msg_ctx_t *msg_ctx);
+
+static void AXIS2_CALL
+axis2_http_sender_connection_map_free(
+    void *cm_void,
+    const axutil_env_t *env);
+
+#endif
 
 static void
 axis2_http_sender_connection_map_remove(
@@ -162,17 +171,6 @@ axis2_http_sender_connection_map_add(
     axutil_hash_t *connection_map,
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
-
-static axis2_http_client_t *
-axis2_http_sender_connection_map_get(
-        axutil_hash_t *connection_map, 
-        const axutil_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
-
-static void AXIS2_CALL
-axis2_http_sender_connection_map_free(
-    void *cm_void,
-    const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_http_sender_t *AXIS2_CALL
 axis2_http_sender_create(
@@ -3176,6 +3174,7 @@ axis2_http_sender_get_keep_alive(
     return sender->keep_alive;
 }
 
+#ifndef AXIS2_LIBCURL_ENABLED
 static axutil_hash_t *
 axis2_http_sender_connection_map_create(
     const axutil_env_t *env,
@@ -3199,6 +3198,7 @@ axis2_http_sender_connection_map_create(
     }
     return connection_map;
 }
+#endif
 
 static void
 axis2_http_sender_connection_map_remove(
@@ -3280,6 +3280,7 @@ axis2_http_sender_connection_map_add(
     }
 }
 
+#ifndef AXIS2_LIBCURL_ENABLED
 static axis2_http_client_t *
 axis2_http_sender_connection_map_get(
         axutil_hash_t *connection_map, 
@@ -3314,7 +3315,9 @@ axis2_http_sender_connection_map_get(
     }
     return http_client;
 }
+#endif
 
+#ifndef AXIS2_LIBCURL_ENABLED
 static void AXIS2_CALL
 axis2_http_sender_connection_map_free(
     void *cm_void,
@@ -3344,4 +3347,4 @@ axis2_http_sender_connection_map_free(
     }
     axutil_hash_free(ht, env);
 }
-
+#endif
