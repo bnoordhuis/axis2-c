@@ -1038,13 +1038,14 @@ axis2_libcurl_set_proxy_options(
             curl_easy_setopt(handler, CURLOPT_PROXYPORT, AXIS2_ATOI(proxy_port));
         }
     }
-    if (uname && passwd)
+
+    if (uname)
     {
-        axis2_char_t buffer[256];
-        strncpy(buffer, uname, 256);
-        strncat(buffer, ":", 256);
-        strncat(buffer, passwd, 256);
-        curl_easy_setopt(handler, CURLOPT_PROXYUSERPWD, buffer);
+        curl_easy_setopt(handler, CURLOPT_PROXYUSERNAME, uname);
+    }
+    if (passwd)
+    {
+        curl_easy_setopt(handler, CURLOPT_PROXYPASSWORD, passwd);
     }
 
     return AXIS2_SUCCESS;
